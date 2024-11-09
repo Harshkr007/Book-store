@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/firebase.config";
 import {
   createUserWithEmailAndPassword,
+  getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -33,7 +34,21 @@ export const AuthProvider = ({ children }) => {
 
   //sign up with google
   const signInWithGoogle = async () => {
-    return await signInWithPopup(auth, GoogleProvider);
+    try {
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
+      const auth = getAuth();
+      const result = await signInWithPopup(auth, provider);
+      return result;
+    } catch (error) {
+      if (error.code === 'auth/popup-closed-by-user') {
+        console.log('Sign-in popup was closed by the user');
+        return null;
+      }
+      throw error;
+    }
   };
 
   //logout a user

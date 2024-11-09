@@ -1,4 +1,3 @@
-import express from "express";
 import Order from "../models/order.model.js";
 
 const handleCreateOrder = async (req,res) => {

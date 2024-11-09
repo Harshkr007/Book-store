@@ -7,7 +7,7 @@ import { useCreateOrderMutation } from "../../store/features/order/orderApiSlice
 import Swal from 'sweetalert2'
 
 function CheckOut() {
-  const [isChecked, setIsChecked] = useState(false); // Changed initial state to false
+  const [isChecked, setIsChecked] = useState(false); 
 
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ function CheckOut() {
     .reduce((acc, item) => acc + item.newPrice, 0)
     .toFixed(2);
 
-  const [createOrder,{isLoading,isError}] = useCreateOrderMutation();
+  const [createOrder,{isLoading}] = useCreateOrderMutation();
 
   const onSubmit = async (data) => {
     const newOrder = {
@@ -34,10 +34,10 @@ function CheckOut() {
         city: data.city,
         country: data.country,
         state: data.state,
-        zipcode: data.zipcode,
+        zipCode: data.zipcode,
       },
       phone: data.phone,
-      productIds: cartItems.map((item) => item?._id),
+      productsIds: cartItems.map((item) => item?._id),
       totalPrice: totalPrice,
     };
     console.log(newOrder);

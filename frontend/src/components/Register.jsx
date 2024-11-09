@@ -35,13 +35,16 @@ function Register() {
 
     const handleGoogleSignIn = async () => {
       try {
-        await signInWithGoogle();
-        alert("Login successful with Google")
-        navigate("/")
+        const result = await signInWithGoogle();
+        if (result) {
+          navigate("/");
+        }
       } catch (error) {
-        console.error(error);
+        console.error("Google sign-in error:", error);
+        setMessage("Google sign-in failed. Please try again.");
       }
     };
+    
   return (
     <div className="h-[calc(100vh-120px)] flex justify-center items-center">
       <div className="w-full max-w-sm mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">

@@ -1,7 +1,5 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";  
 import { baseURL } from '../../../utils/baseURL'
-
-
 
 const baseQuery = fetchBaseQuery({
     baseUrl: `${baseURL}/api/orders`,
@@ -12,7 +10,8 @@ const baseQuery = fetchBaseQuery({
             headers.set("Authorization", `Bearer ${token}`);
         }
         return headers;
-}})
+    }
+})
 
 const orderApi = createApi({
     reducerPath: "orderApi",
@@ -24,17 +23,15 @@ const orderApi = createApi({
                 url: "/create",
                 method: "POST",
                 body: newOrder,
-            })
-        }),
-        getOrderByEmail: (builder.query) ({
-            query: (email) => ({
-                url: `/email/${email}`,
             }),
-            providesTags: ["Orders"],
+            invalidatesTags: ["Orders"]
+        }),
+        getOrderByEmail: builder.query({
+            query: (email) => `/email/${email}`,
+            providesTags: ["Orders"]
         })
-
     })
-
 })
-export const { useCreateOrderMutation,useGetOrderByEmailQuery} = orderApi;
+
+export const { useCreateOrderMutation, useGetOrderByEmailQuery } = orderApi;
 export default orderApi;
