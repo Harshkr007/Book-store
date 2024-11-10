@@ -1,4 +1,4 @@
-import { Book } from "../models/book.model.js";
+import Book from "../models/book.model.js";
 
 
 const handleBookCreate = async (req,res) => {

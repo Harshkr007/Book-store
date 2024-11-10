@@ -6,6 +6,8 @@ import cors from "cors";
 //import routes
 import bookRoute from "./src/routers/book.routes.js"
 import orderRoutes from "./src/routers/order.routes.js"
+import userRoute from "./src/routers/user.routes.js"
+import adminRoute from "./src/stats/admin.stats.js"
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.use(express.static('public'));
 //routing
 app.use("/api/books",bookRoute);
 app.use("/api/orders",orderRoutes);
+app.use("/api/users",userRoute);
+app.use("/api/admin",adminRoute);
 
 
 
