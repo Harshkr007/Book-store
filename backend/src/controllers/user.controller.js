@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const handleUserRegistration = async (req, res) => {
     try {
@@ -33,6 +34,7 @@ const handleUserAdmin = async (req, res) => {
     const {username, password} = req.body;
     try {
         const admin = await User.findOne({ username });
+        
         if(!admin) {
             return res.status(404).json({
                 message: "Admin not found"
@@ -45,7 +47,9 @@ const handleUserAdmin = async (req, res) => {
             });
         }
 
-        if(admin.password !== password) {
+        // Add password comparison
+        const isPasswordValid = await bcrypt.compare(password, admin.password);
+        if(!isPasswordValid) {
             return res.status(401).json({
                 message: "Invalid credentials"
             });
@@ -58,7 +62,7 @@ const handleUserAdmin = async (req, res) => {
         }, process.env.JWT_SECRET_KEY, 
         {
             expiresIn: "1d",
-        })
+        });
 
         return res.status(200).json({
             message: "Authentication successful",
@@ -76,6 +80,7 @@ const handleUserAdmin = async (req, res) => {
         });
     }
 }
+
 /*
 const handleUserLogin = async (req,res) => {
     try {

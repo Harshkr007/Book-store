@@ -18,30 +18,27 @@ function AdminLogin() {
       } = useForm();
 
       const onSubmit = async (data) => {
-        console.log(data);
         try {
-          const response = await axios.post(`${baseURL}/api/users/admin`,data,{
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          const auth = response.data;
-          if(auth.token){
-            localStorage.setItem("token", auth.token);
-            setTimeout(() => {
-                localStorage.removeItem('token');
-                alert("Token has been expired!,Please login again");
-                navigate("/");
-            },3600 * 1000)
-           
-          }
-           alert("Login Successful");
-           navigate("/dashboard");
+            const response = await axios.post(`${baseURL}/api/users/admin`, {
+                username: data.username,
+                password: data.password
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            
+            if(response.data.token) {
+                localStorage.setItem("token", response.data.token);
+                alert("Login Successful");
+                navigate("/dashboard");
+            }
         } catch (error) {
-          setMessage("Plese provide a valid email and password")
-          console.error(error)
+            console.error("Login error:", error.response?.data || error.message);
+            setMessage(error.response?.data?.message || "Login failed. Please check your credentials.");
         }
-      }
+    };
+    
     
 
   return (

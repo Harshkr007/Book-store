@@ -11,10 +11,10 @@ import adminRoute from "./src/stats/admin.stats.js"
 
 const app = express();
 
-// Combine middleware with reduced setup
+//middlewares   
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:5173',  // Fixed spelling and direct value
+    origin: 'http://localhost:5173',  
     credentials: true
 }))
 app.use(express.urlencoded({ extended: false }));
